@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lts.mybatisplus.sys.mapper.UserMapper">
+    <resultMap id="baseMap" type="User">
+        <id column="user_id" property="userId"></id>
+        <result column="username" property="username"></result>
+        <result column="password" property="password"></result>
+        <result column="salt" property="salt"></result>
+        <result column="email" property="email"></result>
+        <result column="mobile" property="mobile"></result>
+        <result column="status" property="status"></result>
+        <collection property="roles" ofType="com.lts.mybatisplus.sys.entity.Role">
+            <id column="role_id" property="roleId"></id>
+            <result column="role_name" property="roleName"></result>
+            <result column="remark" property="remark"></result>
+        </collection>
+    </resultMap>
+    <select id="selectUserById" resultMap="baseMap" parameterType="string">
+
+        select * from sys_user user
+        left join sys_user_role user_role on
+        user.user_id = user_role.user_id
+        join sys_role role ON
+        role.role_id = user_role.role_id
+        where username=#{username}
+    </select>
+</mapper>
